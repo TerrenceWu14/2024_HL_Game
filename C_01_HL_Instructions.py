@@ -22,24 +22,6 @@ def string_checker(question, valid_ans=('yes', 'no')):
         print()
 
 
-# Asks the user how many rounds they want to play or infinite mode
-def num_rounds():
-    while True:
-        num_round = input("How many rounds do you want to play (press <enter> for infinite): ")
-
-        # Returns infinite if the user pressed <enter>
-        if num_round == "":
-            return "infinite"
-        # Returns the number of rounds the user chose
-        elif num_round == int(num_round) > 0:
-            return int(num_round)
-        # Anything else gets sent back to the start of the loop
-        else:
-            print("Please either press <enter> for infinite mode "
-                  "or type the number (greater than 0) of rounds you want to play")
-            print()
-
-
 # Displays instructions
 def instructions():
     print('''
@@ -56,7 +38,7 @@ infinite mode.
 Your goal is to try to guess the secret number without 
 running out of guesses
 
-    Good luck!
+Good luck!
     
     ''')
 
@@ -67,13 +49,12 @@ print("⬆⬆⬆ Welcome to the Higher Lower Game ⬇⬇⬇")
 print()
 
 # Loops the code
-while True:
-    want_instruction = string_checker("Do you want to read the instructions? (If so type yes or if not type no)")
+want_instruction = string_checker("Do you want to read the instructions? (If so type yes or if not type no)")
 
-    # Checks whether the user entered yes or no
-    if want_instruction == "yes" or want_instruction == "y":
-        instructions()
-    print("program continues")
-    print()
+# Checks whether the user entered yes or no
+if want_instruction == "yes":
+    instructions()
+print("program continues")
+print()
 
-    rounds = num_rounds()
+
