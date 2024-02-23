@@ -1,47 +1,56 @@
-# Check that users have entered a valid
-# option based on a list
-def string_checker(question, valid_ans=('yes', 'no')):
-    error = f"Please enter a valid answer from the following list: {valid_ans}"
+# Check that users have entered a valid integer
+
+def int_check(question, low=None, high=None, exit_code=None):
+    # sets up an error message
+    if low is None and high is None:
+        error = "Please enter an integer"
+
+    # if the number needs to be more than an
+    # integer (ie: rounds / high number)
+    elif low is not None and high is None:
+        error = (f"Please enter an integer that is "
+                 f"more than / equal to {low}")
+
+    # if the number needs to be between a low and a high
+    else:
+        error = (f"Please enter and integer that"
+                 f"is between {low} and {high} (inclusive")
 
     while True:
+        response = input(question).lower()
 
-        user_response = input(question).lower()
+        if response == exit_code:
+            return response
 
-        for item in valid_ans:
-            # Checks if the user response is a word in the list
-            if item == user_response:
-                return item
-            # Checks if the user response
-            # is the as the first letter of an item in the list
-
-            elif user_response == item[0]:
-                return item
-
-        # Print error if the user does not enter something that is valid
-        print(error)
-        print()
-
-
-# Checks the game mode/num of rounds the user chose
-def num_rounds():
-    while True:
-        num_round = input("How many rounds do you want to play (press <enter> for infinite): ")
-        # Returns infinite if the user pressed <enter>
-        if num_round == "":
-            return "infinite"
-        # Returns the number of rounds the user chose
         try:
-            num_round = int(num_round)
-            # Returns the number of rounds the user chose if it's greater than 0
-            if num_round > 0:
-                return num_round
+            response = int(response)
+
+            # checks that the integer is not lower than the low num
+            if low is not None and response < low:
+                print(error)
+
+            # checks that the integer is not higher than the high num
+            elif high is not None and response > high:
+                print(error)
+
+            # returns the response if the response entered meets the criteria
             else:
-                print()
-                print("Please enter a number greater than 0 or press <enter> for infinite mode")
-        # Handles errors if the input is not a number
+                return response
+
         except ValueError:
-            print()
-            print("Please enter a valid number or press <enter> for infinite mode")
+            print(error)
+
+
+# Checks whether the user entered yes or no
+def yes_no(question):
+    while True:
+        response = input(question).lower()
+        if response == "yes" or response == "y":
+            return "yes"
+        elif response == "no" or response == "n":
+            return "no"
+        else:
+            print("you didn't choose a valid option (yes/no)")
 
 
 # Displays instructions
@@ -71,11 +80,19 @@ print("⬆⬆⬆ Welcome to the Higher Lower Game ⬇⬇⬇")
 print()
 
 
-want_instruction = string_checker("Do you want to read the instructions? (If so type yes or if not type no)")
+want_instruction = yes_no("Do you want to read the instructions? (If so type yes or if not type no)")
 
 # Checks whether the user entered yes or no
 if want_instruction == "yes":
     instructions()
-print("program continues")
-rounds = num_rounds()
-print(rounds)
+
+# Asks the user how many rounds they want to play
+num_rounds = int_check("Rounds <enter for infinite>: ", low=1, exit_code="")
+
+# Gets the game parameters
+low_num = int_check("Low number: ")
+high_num = int_check("High number:", low=low_num+1)
+
+
+
+
