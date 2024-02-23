@@ -1,3 +1,6 @@
+import math
+
+
 # Check that users have entered a valid integer
 
 def int_check(question, low=None, high=None, exit_code=None):
@@ -41,6 +44,16 @@ def int_check(question, low=None, high=None, exit_code=None):
             print(error)
 
 
+# calculate the number of guesses allowed
+
+def calc_guesses(low, high):
+    num_range = high - low + 1
+    max_raw = math.log2(num_range)
+    max_upped = math.ceil(max_raw)
+    max_guesses = max_upped + 1
+    return max_guesses
+
+
 # Checks whether the user entered yes or no
 def yes_no(question):
     while True:
@@ -74,11 +87,12 @@ Good luck!
     ''')
 
 
+# Main routine
+
 # Displays the title
 print()
 print("⬆⬆⬆ Welcome to the Higher Lower Game ⬇⬇⬇")
 print()
-
 
 want_instruction = yes_no("Do you want to read the instructions? (If so type yes or if not type no)")
 
@@ -91,8 +105,5 @@ num_rounds = int_check("Rounds <enter for infinite>: ", low=1, exit_code="")
 
 # Gets the game parameters
 low_num = int_check("Low number: ")
-high_num = int_check("High number:", low=low_num+1)
-
-
-
-
+high_num = int_check("High number:", low=low_num + 1)
+guesses_allowed = calc_guesses(low_num, high_num)
