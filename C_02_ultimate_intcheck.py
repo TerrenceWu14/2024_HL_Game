@@ -6,7 +6,7 @@ def int_check(question, low=None, high=None, exit_code=None):
     # if the number needs to be more than an
     # integer (ie: rounds / high number)
     elif low is not None and high is None:
-        error = (f"Please enter an integer that is"
+        error = (f"Please enter an integer that is "
                  f"more than / equal to {low}")
 
     # if the number needs to be between a low and a high
@@ -45,7 +45,19 @@ def int_check(question, low=None, high=None, exit_code=None):
 
 # Main routine goes here
 
-rounds = "test"
-while rounds != "":
-    rounds = int_check("Rounds <enter for infinite>: ", low=1, exit_code="xxx")
-    print(f"You asked for {rounds}")
+# rounds = "test"
+# while rounds != "":
+#     rounds = int_check("Rounds <enter for infinite>: ", low=1, exit_code="xxx")
+#     print(f"You asked for {rounds}")
+
+low_num = int_check("Low number: ")
+print(f"You chose {low_num} as your low number")
+
+high_num = int_check("High number:", low=1)
+print(f"You chose {high_num} as your high number")
+
+guess = ""
+while guess != "xxx":
+    guess = int_check("Guess:", low=0, high=10, exit_code="xxx")
+    print(f"You guessed {guess}")
+    print()
