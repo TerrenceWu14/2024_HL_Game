@@ -91,6 +91,7 @@ Good luck!
 
 # Main routine
 
+
 # Displays the title
 print()
 print("⬆⬆⬆ Welcome to the Higher Lower Game ⬇⬇⬇")
@@ -104,38 +105,49 @@ if want_instruction == "yes":
 
 # Asks the user how many rounds they want to play
 num_rounds = int_check("Number of Rounds or <enter for infinite>: ", low=1, exit_code="")
+if num_rounds == "":
+    rounds = ""
+else:
+    num_rounds = num_rounds
 
-# Gets the game parameters
-low_num = int_check("Low number: ")
-high_num = int_check("High number:", low=low_num + 1)
-guesses_allowed = calc_guesses(low_num, high_num)
+while num_rounds > 0:
 
-# Generates the random number, between the low num and high num
-guess_num = random.randint(low_num, high_num)
+    print(f"--- Round {num_rounds} ---")
 
-# Loops while guesses remaining are above 0 or
-# if they have not guessed the number yet
-while guesses_allowed > 0:
+    # Gets the game parameters
+    low_num = int_check("Low number: ")
+    high_num = int_check("High number:", low=low_num + 1)
+    guesses_allowed = calc_guesses(low_num, high_num)
 
-    # if guesses = 1 it prints "This is your final guess"
-    if guesses_allowed == 1:
-        print()
-        print("This is your final guess!")
-        print()
-    # prints the amount of guesses you have left
-    elif guesses_allowed > 1:
-        print(f"You have {guesses_allowed} guesses")
-        print()
+    # Generates the random number, between the low num and high num
+    guess_num = random.randint(low_num, high_num)
 
-    num_chose = int(input("Guess a number: "))
+    # Loops while guesses remaining are above 0 or
+    # if they have not guessed the number yet
+    while guesses_allowed > 0:
 
-    if num_chose > guess_num:
-        print("The number you have chosen is higher than the secret number")
-    elif num_chose < guess_num:
-        print("The number you have chose is lower than the secret number")
-    elif num_chose == guess_num:
-        break
-    # Removes 1 guess every loop
-    guesses_allowed -= 1
+        # if guesses = 1 it prints "This is your final guess"
+        if guesses_allowed == 1:
+            print()
+            print("This is your final guess!")
+            print()
+        # prints the amount of guesses you have left
+        elif guesses_allowed > 1:
+            print(f"You have {guesses_allowed} guesses")
+            print()
 
-print(f"Congratulations 🥳🥳🥳 You have chosen the correct number which was {guess_num}")
+        num_chose = int(input("Guess a number: "))
+
+        if num_chose > guess_num:
+            print("The number you have chosen is higher than the secret number")
+        elif num_chose < guess_num:
+            print("The number you have chose is lower than the secret number")
+        elif num_chose == guess_num:
+            break
+        # Removes 1 guess every loop
+        guesses_allowed -= 1
+
+    print(f"Congratulations 🥳🥳🥳 You have chosen the correct number which was {guess_num}")
+
+    # adds 1 to the num of rounds
+    num_rounds += 1
