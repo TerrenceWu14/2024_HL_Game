@@ -1,5 +1,7 @@
 import math
 
+import random
+
 
 # Check that users have entered a valid integer
 
@@ -50,7 +52,7 @@ def calc_guesses(low, high):
     num_range = high - low + 1
     max_raw = math.log2(num_range)
     max_upped = math.ceil(max_raw)
-    max_guesses = max_upped + 1
+    max_guesses = max_upped
     return max_guesses
 
 
@@ -83,7 +85,7 @@ Your goal is to try to guess the secret number without
 running out of guesses
 
 Good luck!
-    
+
     ''')
 
 
@@ -101,9 +103,39 @@ if want_instruction == "yes":
     instructions()
 
 # Asks the user how many rounds they want to play
-num_rounds = int_check("Rounds <enter for infinite>: ", low=1, exit_code="")
+num_rounds = int_check("Number of Rounds or <enter for infinite>: ", low=1, exit_code="")
 
 # Gets the game parameters
 low_num = int_check("Low number: ")
 high_num = int_check("High number:", low=low_num + 1)
 guesses_allowed = calc_guesses(low_num, high_num)
+
+# Generates the random number, between the low num and high num
+guess_num = random.randint(low_num, high_num)
+
+# Loops while guesses remaining are above 0 or
+# if they have not guessed the number yet
+while guesses_allowed > 0:
+
+    # if guesses = 1 it prints "This is your final guess"
+    if guesses_allowed == 1:
+        print()
+        print("This is your final guess!")
+        print()
+    # prints the amount of guesses you have left
+    elif guesses_allowed > 1:
+        print(f"You have {guesses_allowed} guesses")
+        print()
+
+    num_chose = int(input("Guess a number: "))
+
+    if num_chose > guess_num:
+        print("The number you have chosen is higher than the secret number")
+    elif num_chose < guess_num:
+        print("The number you have chose is lower than the secret number")
+    elif num_chose == guess_num:
+        break
+    # Removes 1 guess every loop
+    guesses_allowed -= 1
+
+print(f"Congratulations 🥳🥳🥳 You have chosen the correct number which was {guess_num}")
