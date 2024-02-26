@@ -9,17 +9,20 @@ def int_check(question, low=None, high=None, exit_code=None):
     # sets up an error message
     if low is None and high is None:
         error = "Please enter an integer"
+        print()
 
     # if the number needs to be more than an
     # integer (ie: rounds / high number)
     elif low is not None and high is None:
         error = (f"Please enter an integer that is "
                  f"more than / equal to {low}")
+        print()
 
     # if the number needs to be between a low and a high
     else:
         error = (f"Please enter and integer that"
                  f"is between {low} and {high} (inclusive")
+        print()
 
     while True:
         response = input(question).lower()
@@ -68,6 +71,23 @@ def yes_no(question):
             print("you didn't choose a valid option (yes/no)")
 
 
+# Asks the user how many rounds they want to play
+def num_rounds():
+    while True:
+        print()
+        num_round = input("How many rounds do you want to play (press <enter> for infinite): ")
+        if num_round == "":
+            return "infinite"
+        try:
+            num_round = int(num_round)
+            if num_round > 0:
+                return num_round
+            else:
+                print("Please enter a number greater than 0 or press <enter> for infinite mode")
+        except ValueError:
+            print("Please enter a valid number or press <enter> for infinite mode")
+
+
 # Displays instructions
 def instructions():
     print('''
@@ -90,7 +110,7 @@ Good luck!
 
 
 # Main routine
-
+round_num = 0
 
 # Displays the title
 print()
@@ -104,19 +124,20 @@ if want_instruction == "yes":
     instructions()
 
 # Asks the user how many rounds they want to play
-num_rounds = int_check("Number of Rounds or <enter for infinite>: ", low=1, exit_code="")
-if num_rounds == "":
-    rounds = ""
-else:
-    num_rounds = num_rounds
+total_rounds = num_rounds()
 
-while num_rounds > 0:
+while total_rounds == "infinite" or round_num < total_rounds:
 
-    print(f"--- Round {num_rounds} ---")
+    # adds 1 to the num of rounds
+    round_num += 1
+
+    print(f"--- Round {round_num} ---")
 
     # Gets the game parameters
+    print()
     low_num = int_check("Low number: ")
     high_num = int_check("High number:", low=low_num + 1)
+    print()
     guesses_allowed = calc_guesses(low_num, high_num)
 
     # Generates the random number, between the low num and high num
@@ -136,7 +157,7 @@ while num_rounds > 0:
             print(f"You have {guesses_allowed} guesses")
             print()
 
-        num_chose = int(input("Guess a number: "))
+        num_chose = int_check("Guess a number: ")
 
         if num_chose > guess_num:
             print("The number you have chosen is higher than the secret number")
@@ -148,6 +169,5 @@ while num_rounds > 0:
         guesses_allowed -= 1
 
     print(f"Congratulations 🥳🥳🥳 You have chosen the correct number which was {guess_num}")
+    print()
 
-    # adds 1 to the num of rounds
-    num_rounds += 1
