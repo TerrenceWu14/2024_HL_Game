@@ -118,8 +118,10 @@ Good luck!
 
 
 # Main routine
+
 round_num = 0
 secret = 0
+already_guessed = []
 
 # Displays the title
 print()
@@ -171,16 +173,28 @@ while total_rounds == "infinite" or "secret" or round_num < total_rounds or gues
             print(f"You have {guesses_allowed} guesses")
             print()
 
-        num_chose = int_check("Guess a number (or type xxx to exit): ")
+        guess = int_check("Guess a number (or type xxx to exit): ")
 
-        if num_chose == "xxx":
+        # exits the code if the user types "xxx"
+        if guess == "xxx":
+            print("Thanks for playing!")
             exit()
 
-        if num_chose > guess_num or num_chose > secret_number:
+        # check that guess is not duplicate
+        if guess in already_guessed:
+            print(f"You've already guessed {guess}. You've still got"
+                  f" {guesses_allowed} left")
+            continue
+
+        # if guess is not a duplicate, add it to the already guessed list
+        else:
+            already_guessed.append(guess)
+
+        if guess > guess_num or guess > secret_number:
             print("The number you have chosen is higher than the secret number")
-        elif num_chose < guess_num or num_chose < secret_number:
+        elif guess < guess_num or guess < secret_number:
             print("The number you have chose is lower than the secret number")
-        elif num_chose == guess_num or num_chose == guess_num:
+        elif guess == guess_num or guess == guess_num:
             break
         # Removes 1 guess every loop
         guesses_allowed -= 1
