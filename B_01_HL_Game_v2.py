@@ -76,22 +76,24 @@ def num_rounds():
     while True:
         print()
         num_round = input("How many rounds do you want to play (press <enter> for infinite) or type secret for us to "
-                          "choose for you? : ")
+                          "choose for you?")
         if num_round == "":
             return "infinite"
 
-        elif num_round == "secret" or "s" or "sec":
-            return "secret_mode"
+        elif num_round == "secret" or num_round == "s" or num_round == "sec":
+            return "secret"
 
+        # Checks that the integer is higher than 0
         try:
             num_round = int(num_round)
             if num_round > 0:
                 return num_round
 
             else:
-                print("Please enter a number greater than 0 or press <enter> for infinite mode")
+                print("Please enter a number greater than 0 or press <enter> for infinite mode or choose secret mode")
+        # prints an error message if the user didn't enter an integer or a valid option
         except ValueError:
-            print("Please enter a valid number or press <enter> for infinite mode")
+            print("Please enter a valid number or press <enter> for infinite mode or choose secret mode")
 
 
 # Displays instructions
@@ -133,15 +135,19 @@ if want_instruction == "yes":
 # Asks the user how many rounds they want to play
 total_rounds = num_rounds()
 
-while total_rounds == "infinite" or round_num < total_rounds or :
+while total_rounds == "infinite" or "secret" or round_num < total_rounds or guesses_allowed > 0:
 
     # adds 1 to the num of rounds
     round_num += 1
 
     print(f"--- Round {round_num} ---")
+    if total_rounds == "secret":
+        # Generates the random secret number from 1 to 100
+        secret_number = random.randint(1, 100)
+        guesses_allowed = 6
+        guess_num = secret_number
 
-    # Gets the user to enter number if it isn't secret mode
-    if total_rounds != "secret_mode":
+    else:
         # Gets the game parameters
         print()
         low_num = int_check("Low number: ")
@@ -150,11 +156,6 @@ while total_rounds == "infinite" or round_num < total_rounds or :
         guesses_allowed = calc_guesses(low_num, high_num)
         # Generates the random number, between the low num and high num
         guess_num = random.randint(low_num, high_num)
-
-    else:
-        # Generates the random secret number from 1 to 100
-        secret_number = random.randint(1, 100)
-        have_guessed = "no"
 
     # Loops while guesses remaining are above 0 or
     # if they have not guessed the number yet
@@ -170,7 +171,10 @@ while total_rounds == "infinite" or round_num < total_rounds or :
             print(f"You have {guesses_allowed} guesses")
             print()
 
-        num_chose = int_check("Guess a number: ")
+        num_chose = int_check("Guess a number (or type xxx to exit): ")
+
+        if num_chose == "xxx":
+            exit()
 
         if num_chose > guess_num or num_chose > secret_number:
             print("The number you have chosen is higher than the secret number")
