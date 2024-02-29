@@ -143,7 +143,7 @@ while total_rounds == "infinite" or "secret":
     # adds 1 to the num of rounds
     round_num += 1
 
-    if total_rounds != "infinite" and round_num > total_rounds:
+    if total_rounds != "infinite" and total_rounds != "secret" and round_num > total_rounds:
         break
 
     # displays the round number
