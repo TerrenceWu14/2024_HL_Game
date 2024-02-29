@@ -119,6 +119,7 @@ Good luck!
 
 # Main routine
 
+# Initializes game variables
 round_num = 0
 secret = 0
 already_guessed = []
@@ -137,18 +138,25 @@ if want_instruction == "yes":
 # Asks the user how many rounds they want to play
 total_rounds = num_rounds()
 
-while total_rounds == "infinite" or "secret" or round_num < total_rounds or guesses_allowed > 0:
+while total_rounds == "infinite" or "secret":
 
     # adds 1 to the num of rounds
     round_num += 1
 
+    if total_rounds != "infinite" and round_num > total_rounds:
+        break
+
+    # displays the round number
     print(f"--- Round {round_num} ---")
+
+    # randomly generates a number from 1 to 100 if its secret mode
     if total_rounds == "secret":
         # Generates the random secret number from 1 to 100
         secret_number = random.randint(1, 100)
         guesses_allowed = 6
         guess_num = secret_number
 
+    # else it's the normal game mode
     else:
         # Gets the game parameters
         print()
@@ -173,6 +181,7 @@ while total_rounds == "infinite" or "secret" or round_num < total_rounds or gues
             print(f"You have {guesses_allowed} guesses")
             print()
 
+        # The user guesses a number
         guess = int_check("Guess a number (or type xxx to exit): ")
 
         # exits the code if the user types "xxx"
@@ -190,14 +199,34 @@ while total_rounds == "infinite" or "secret" or round_num < total_rounds or gues
         else:
             already_guessed.append(guess)
 
-        if guess > guess_num or guess > secret_number:
+        if guess > guess_num:
+            print()
             print("The number you have chosen is higher than the secret number")
-        elif guess < guess_num or guess < secret_number:
+        elif guess < guess_num:
+            print()
             print("The number you have chose is lower than the secret number")
         elif guess == guess_num or guess == guess_num:
+            correct_guess = "yes"
             break
         # Removes 1 guess every loop
         guesses_allowed -= 1
 
-    print(f"Congratulations 🥳🥳🥳 You have chosen the correct number which was {guess_num}")
-    print()
+        # if the user runs out of guesses it exits the while loop and displays one of 2 end messages
+        if guesses_allowed == 0:
+            correct_guess = "no"
+
+    # displays message depending on whether the user guessed the number or not
+    if correct_guess == "yes":
+        print()
+        print(f"Congratulations 🥳🥳🥳 You have chosen the correct number which was {guess_num}")
+        print()
+
+    elif correct_guess == "yes" and guesses_allowed == 1:
+        print()
+        print(f"Phew! That was close, you managed to guess {guess_num} correctly on your last guess!")
+        print()
+
+    elif correct_guess == "no":
+        print()
+        print(f"Sadly, you have run out of guesses and you have not guessed the number which was {guess_num}.")
+        print()
