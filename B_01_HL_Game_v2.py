@@ -122,7 +122,7 @@ Good luck!
 # Initializes game variables
 round_num = 0
 secret = 0
-already_guessed = []
+game_history = []
 
 # Displays the title
 print()
@@ -138,19 +138,20 @@ if want_instruction == "yes":
 # Asks the user how many rounds they want to play
 total_rounds = num_rounds()
 
-while total_rounds == "infinite" or "secret":
+while total_rounds == "infinite" or total_rounds == "secret" or round_num < total_rounds:
+
+    # Resets the list of guesses each round
+    already_guessed = []
 
     # adds 1 to the num of rounds
     round_num += 1
-
-    if total_rounds != "infinite" and total_rounds != "secret" and round_num > total_rounds:
-        break
 
     # displays the round number
     print(f"--- Round {round_num} ---")
 
     # randomly generates a number from 1 to 100 if its secret mode
     if total_rounds == "secret":
+        print("The secret number is between 1 and 100!")
         # Generates the random secret number from 1 to 100
         secret_number = random.randint(1, 100)
         guesses_allowed = 6
@@ -187,7 +188,7 @@ while total_rounds == "infinite" or "secret":
         # exits the code if the user types "xxx"
         if guess == "xxx":
             print("Thanks for playing!")
-            exit()
+            break
 
         # check that guess is not duplicate
         if guess in already_guessed:
@@ -220,13 +221,40 @@ while total_rounds == "infinite" or "secret":
         print()
         print(f"Congratulations 🥳🥳🥳 You have chosen the correct number which was {guess_num}")
         print()
+        history_item = f"Round {round_num}: You have won this round by guessing {guess_num}"
+
 
     elif correct_guess == "yes" and guesses_allowed == 1:
         print()
-        print(f"Phew! That was close, you managed to guess {guess_num} correctly on your last guess!")
+        print(f"Phew! It was close, you managed to guess {guess_num} correctly on your last guess!")
         print()
+        history_item = f"Round {round_num}: You were super close from losing! Luckily you had guessed {guess_num}!"
 
     elif correct_guess == "no":
         print()
-        print(f"Sadly, you have run out of guesses and you have not guessed the number which was {guess_num}.")
+        print(
+            f"Round {round_num}: Sadly, you ran out of guesses and you have not guessed the number which was {guess_num}.")
         print()
+        history_item = f"Round {round_num}: Sadly you lost, you didn't manage to guess {guess_num}."
+
+        # If the game mode chosen was secret mode, it asks if the user wants to play again
+        if total_rounds == "secret":
+            play_again = yes_no("Do you want to play again?")
+
+            if play_again == "yes":
+                continue
+
+            elif play_again == "no":
+                break
+
+    game_history.append(history_item)
+
+view_history = yes_no("Do you want to view the game history?")
+print()
+
+if view_history == "yes":
+    print("\n⌛⌛⌛ Game History ⌛⌛⌛ ")
+    print()
+    # Outputs the game history
+    for item in game_history:
+        print(item)
