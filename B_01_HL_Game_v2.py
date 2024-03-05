@@ -140,6 +140,7 @@ if want_instruction == "yes":
 # Asks the user how many rounds they want to play
 total_rounds = num_rounds()
 
+
 while total_rounds == "infinite" or total_rounds == "secret" or round_num < total_rounds:
 
     # Resets the list of guesses each round
@@ -147,10 +148,6 @@ while total_rounds == "infinite" or total_rounds == "secret" or round_num < tota
 
     # adds 1 to the num of rounds
     round_num += 1
-
-    # displays the round number
-    print()
-    print(f"--- Round {round_num} ---")
 
     # randomly generates a number from 1 to 100 if its secret mode
     if total_rounds == "secret":
@@ -161,16 +158,22 @@ while total_rounds == "infinite" or total_rounds == "secret" or round_num < tota
         guess_num = secret_number
 
     # else it's the normal game mode
-    else:
+    if round_num == 1:
         # Gets the game parameters
         print()
         low_num = int_check("Low number: ")
         high_num = int_check("High number:", low=low_num + 1)
         print()
-        guesses_allowed = calc_guesses(low_num, high_num)
-        initial_guesses = guesses_allowed
-        # Generates the random number, between the low num and high num
-        guess_num = random.randint(low_num, high_num)
+
+    # Generates the guesses allowed
+    guesses_allowed = calc_guesses(low_num, high_num)
+    initial_guesses = guesses_allowed
+    # Generates the random number, between the low num and high num
+    guess_num = random.randint(low_num, high_num)
+
+    # displays the round number
+    print()
+    print(f"--- Round {round_num} ---")
 
     # Loops while guesses remaining are above 0 or
     # if they have not guessed the number yet
