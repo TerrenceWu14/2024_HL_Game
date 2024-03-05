@@ -149,6 +149,7 @@ while total_rounds == "infinite" or total_rounds == "secret" or round_num < tota
     round_num += 1
 
     # displays the round number
+    print()
     print(f"--- Round {round_num} ---")
 
     # randomly generates a number from 1 to 100 if its secret mode
@@ -189,12 +190,20 @@ while total_rounds == "infinite" or total_rounds == "secret" or round_num < tota
         guess = int_check("Guess a number (or type xxx to exit): ")
 
         # displays message depending on whether the user guessed the number or not
-        if correct_guess == "yes":
+        if guess == guess_num:
             print()
             print(f"Congratulations 🥳🥳🥳 You have chosen the correct number which was {guess_num}")
             print()
             history_item = f"Round {round_num}: You have won this round by guessing {guess_num}"
             break
+
+        elif correct_guess == "yes" and initial_guesses == guesses_allowed:
+            print()
+            print(f"Round {round_num}: Lucky! You managed to guess it on your first guess!"
+                  f" You guessed {guess_num}.")
+            print()
+            history_item = f"Round {round_num}: Lucky! You had managed to guess it on your first guess!" \
+                           f" You guessed {guess_num}."
 
         # exits the code if the user types "xxx"
         if guess == "xxx":
@@ -237,16 +246,12 @@ while total_rounds == "infinite" or total_rounds == "secret" or round_num < tota
     elif correct_guess == "no":
         print()
         print(
-            f"Round {round_num}: Sadly, you ran out of guesses and you have not guessed the number which was {guess_num}.")
+            f"Round {round_num}: Sadly, you ran out of guesses and you have not "
+            f"guessed the number which was {guess_num}.")
         print()
         history_item = f"Round {round_num}: Sadly you lost, you didn't manage to guess {guess_num}."
 
-    elif correct_guess == "yes" and initial_guesses == guesses_allowed:
-        print()
-        print(f"Round {round_num}: Lucky! You managed to guess it on your first guess! You guessed {guess_num}.")
-        print()
-        history_item = f"Round {round_num}: Lucky! You had managed to guess it on your first guess! You guessed {guess_num}."
-
+    # Adds the history item into a list
     game_history.append(history_item)
 
     # If the game mode chosen was secret mode, it asks if the user wants to play again
