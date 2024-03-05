@@ -154,26 +154,28 @@ while total_rounds == "infinite" or total_rounds == "secret" or round_num < tota
         print("The secret number is between 1 and 100!")
         # Generates the random secret number from 1 to 100
         secret_number = random.randint(1, 100)
-        guesses_allowed = 6
+        guesses_allowed = 7
         guess_num = secret_number
 
     # else it's the normal game mode
-    if round_num == 1:
+    if round_num == 1 and total_rounds != "secret":
         # Gets the game parameters
         print()
         low_num = int_check("Low number: ")
         high_num = int_check("High number:", low=low_num + 1)
         print()
 
-    # Generates the guesses allowed
-    guesses_allowed = calc_guesses(low_num, high_num)
-    initial_guesses = guesses_allowed
-    # Generates the random number, between the low num and high num
-    guess_num = random.randint(low_num, high_num)
-
     # displays the round number
     print()
     print(f"--- Round {round_num} ---")
+
+    if total_rounds != "secret":
+        # Generates the random number, between the low num and high num
+        guess_num = random.randint(low_num, high_num)
+        # Generates the guesses allowed
+        guesses_allowed = calc_guesses(low_num, high_num)
+
+    initial_guesses = guesses_allowed
 
     # Loops while guesses remaining are above 0 or
     # if they have not guessed the number yet
@@ -254,6 +256,8 @@ while total_rounds == "infinite" or total_rounds == "secret" or round_num < tota
         print()
         history_item = f"Round {round_num}: Sadly you lost, you didn't manage to guess {guess_num}."
 
+    # Resets correct guess variable
+    correct_guess = ""
     # Adds the history item into a list
     game_history.append(history_item)
 
