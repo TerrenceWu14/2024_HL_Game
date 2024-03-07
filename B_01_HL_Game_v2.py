@@ -1,5 +1,7 @@
 import math
 
+import re
+
 import random
 
 
@@ -21,7 +23,7 @@ def int_check(question, low=None, high=None, exit_code="xxx"):
     # if the number needs to be between a low and a high
     else:
         error = (f"Please enter and integer that"
-                 f"is between {low} and {high} (inclusive")
+                 f"is between {low} and {high} (inclusive)")
         print()
 
     while True:
@@ -77,6 +79,10 @@ def num_rounds():
         print()
         num_round = input("How many rounds do you want to play (press <enter> for infinite) or type secret for us to "
                           "choose for you?")
+
+        # Removes whitespaces
+        num_round = re.sub(" ", "", num_round)
+
         if num_round == "":
             return "infinite"
 
@@ -124,7 +130,8 @@ round_num = 0
 secret = 0
 game_history = []
 correct_guess = ""
-history_item = ""
+
+end_game = "no"
 
 # Displays the title
 print()
@@ -143,8 +150,14 @@ total_rounds = num_rounds()
 
 while total_rounds == "infinite" or total_rounds == "secret" or round_num < total_rounds:
 
+    if end_game == "yes":
+        break
+
     # Resets the list of guesses each round
     already_guessed = []
+
+    # resets history item
+    history_item = ""
 
     # adds 1 to the num of rounds
     round_num += 1
@@ -194,6 +207,11 @@ while total_rounds == "infinite" or total_rounds == "secret" or round_num < tota
         # The user guesses a number
         guess = int_check("Guess a number (or type xxx to exit): ")
 
+        if guess == "xxx":
+            print("Thanks for playing!")
+            end_game = "yes"
+            break
+
         # displays message depending on whether the user guessed the number or not
         if guess == guess_num:
             print()
@@ -210,12 +228,6 @@ while total_rounds == "infinite" or total_rounds == "secret" or round_num < tota
             history_item = f"Round {round_num}: Lucky! You had managed to guess it on your first guess!" \
                            f" You guessed {guess_num}."
 
-        # exits the code if the user types "xxx"
-        if guess == "xxx":
-            print("Thanks for playing!")
-            correct_guess = "no"
-            break
-
         # check that guess is not duplicate
         elif guess in already_guessed:
             print(f"You've already guessed {guess}. You've still got"
@@ -228,11 +240,11 @@ while total_rounds == "infinite" or total_rounds == "secret" or round_num < tota
 
         if guess > guess_num:
             print()
-            print("The number you have chosen is higher than the secret number")
+            print("Too high.  Guess a lower number!")
         elif guess < guess_num:
             print()
-            print("The number you have chose is lower than the secret number")
-        elif guess == guess_num or guess == guess_num:
+            print("Too low. Guess a higher number")
+        elif guess == guess_num:
             correct_guess = "yes"
             break
 
